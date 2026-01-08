@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helm's Convection - Produksi Pakaian Berkualitas Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --neon-blue: #00d4ff;
+            --neon-purple: #9945ff;
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(20, 20, 30, 0.7);
+        }
+        
+        .dark {
+            color-scheme: dark;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 5px;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Glassmorphism card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Glow effect */
+        .glow {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(153, 69, 255, 0.5);
+        }
+        
+        /* Parallax hero */
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: url('https://picsum.photos/seed/convection-factory/1920/1080.jpg') center/cover;
+            will-change: transform;
+            z-index: -1;
+        }
+        
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(10, 10, 15, 0.7), rgba(10, 10, 15, 0.95));
+            z-index: -1;
+        }
+        
+        /* 3D Card tilt */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+        
+        .card-3d:hover {
+            transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.02);
+        }
+        
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Button hover effect */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-glow:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Pulse animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Mouse tracking effect */
+        .mouse-track {
+            transition: all 0.1s ease;
+        }
+        
+        /* Light mode styles */
+        .light {
+            --dark-bg: #f5f5f5;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+        
+        .light body {
+            background: var(--dark-bg);
+            color: #1a1a1a;
+        }
+        
+        .light .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .light .text-white {
+            color: #1a1a1a !important;
+        }
+        
+        /* Slider for testimonials */
+        .slider-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .slider-item {
+            min-width: 100%;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.95), rgba(30, 30, 45, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        /* Catalog Grid */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .catalog-item-modal {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .catalog-item-modal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        /* Service Detail Styles */
+        .service-detail-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list i {
+            color: var(--neon-blue);
+            margin-right: 15px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body class="dark text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tshirt text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold">Helm's Convection</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="hover:text-cyan-400 transition">Beranda</a>
+                    <a href="#about" class="hover:text-cyan-400 transition">Tentang</a>
+                    <a href="#services" class="hover:text-cyan-400 transition">Layanan</a>
+                    <a href="#catalog" class="hover:text-cyan-400 transition">Katalog</a>
+                    <a href="#testimonials" class="hover:text-cyan-400 transition">Testimoni</a>
+                    <a href="#contact" class="hover:text-cyan-400 transition">Kontak</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle" class="p-2 rounded-lg glass-card hover:bg-white/10 transition">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <button id="mobileMenu" class="md:hidden p-2">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="parallax-overlay"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-4xl mx-auto fade-in">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="gradient-text">Helm's Convection</span>
+                    <br>
+                    <span class="text-white">Produksi Pakaian Berkualitas</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-8">
+                    Dari desain sampai jadi produk siap pakai. Kami mengerjakan kaos, hoodie, seragam, jersey, dan berbagai kebutuhan konveksi lainnya dengan standar kualitas tinggi dan ketepatan waktu produksi.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <div class="flex items-center space-x-2 text-cyan-400">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Konsultasi Desain Gratis</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-purple-400">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Custom Bebas</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-pink-400">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Satuan & Partai Besar</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="openConsultationModal()" class="btn-glow px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold text-lg hover:scale-105 transition transform">
+                        <i class="fas fa-comments mr-2"></i> Konsultasi Sekarang
+                    </button>
+                    <button onclick="openCatalogModal()" class="btn-glow px-8 py-4 glass-card rounded-full font-semibold text-lg hover:scale-105 transition transform">
+                        <i class="fas fa-book mr-2"></i> Lihat Katalog
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 float">
+            <i class="fas fa-chevron-down text-2xl text-cyan-400"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        Tentang <span class="gradient-text">Helm's Convection</span>
+                    </h2>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Helm's Convection adalah usaha konveksi yang berfokus pada produksi pakaian custom dengan kualitas bahan terbaik dan pengerjaan rapi. Kami melayani brand clothing, instansi, komunitas, event organizer, kampus, sekolah, hingga kebutuhan personal.
+                    </p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Kami percaya bahwa setiap produk bukan sekadar pakaian — tetapi identitas. Karena itu, setiap pesanan dikerjakan dengan perhatian pada detail, presisi pola, dan sentuhan profesional.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        Kami siap menjadi partner produksi untuk kamu yang ingin membangun brand fashion, membuat merchandise komunitas, atau memesan seragam dalam jumlah besar.
+                    </p>
+                </div>
+                <div class="relative fade-in">
+                    <img src="https://picsum.photos/seed/convection-workshop/600/400.jpg" alt="Workshop" class="rounded-2xl shadow-2xl">
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-full opacity-20 blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Layanan <span class="gradient-text">Kami</span>
+                </h2>
+                <p class="text-gray-300 text-lg">Solusi lengkap untuk kebutuhan konveksi Anda</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="service-card glass-card rounded-2xl p-6 card-3d mouse-track fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-tshirt text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Kaos Sablon Premium</h3>
+                    <p class="text-gray-300 mb-4">
+                        Produksi kaos sablon untuk distro, komunitas, event, dan merchandise. Bisa pilih bahan cotton combed, carded, dan lainnya.
+                    </p>
+                    <button onclick="openServiceDetail('kaos-sablon')" class="text-cyan-400 hover:text-cyan-300 transition">
+                        Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="service-card glass-card rounded-2xl p-6 card-3d mouse-track fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-needle text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Bordir Komputer Profesional</h3>
+                    <p class="text-gray-300 mb-4">
+                        Bordir rapi, detail halus, dan kuat. Cocok untuk topi, jaket, seragam, dan logo perusahaan.
+                    </p>
+                    <button onclick="openServiceDetail('bordir-komputer')" class="text-purple-400 hover:text-purple-300 transition">
+                        Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="service-card glass-card rounded-2xl p-6 card-3d mouse-track fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-hoodie-cloth text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Hoodie & Sweater Custom</h3>
+                    <p class="text-gray-300 mb-4">
+                        Produksi hoodie zipper / jumper dan sweater dengan bahan tebal, nyaman, dan hangat.
+                    </p>
+                    <button onclick="openServiceDetail('hoodie-sweater')" class="text-pink-400 hover:text-pink-300 transition">
+                        Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="service-card glass-card rounded-2xl p-6 card-3d mouse-track fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-user-tie text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Seragam Kerja & Sekolah</h3>
+                    <p class="text-gray-300 mb-4">
+                        Pengerjaan seragam dengan standar presisi tinggi. Nyaman dipakai, kuat, dan profesional.
+                    </p>
+                    <button onclick="openServiceDetail('seragam')" class="text-green-400 hover:text-green-300 transition">
+                        Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="service-card glass-card rounded-2xl p-6 card-3d mouse-track fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-running text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Jersey Olahraga & Komunitas</h3>
+                    <p class="text-gray-300 mb-4">
+                        Jersey futsal, basket, sepeda, dan e-sport. Bahan dryfit berkualitas, adem, dan quick-dry.
+                    </p>
+                    <button onclick="openServiceDetail('jersey')" class="text-orange-400 hover:text-orange-300 transition">
+                        Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Service Card 6 -->
+                <div class="service-card glass-card rounded-2xl p-6 card-3d mouse-track fade-in">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-red-600 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-hat-cowboy text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Merchandise Custom</h3>
+                    <p class="text-gray-300 mb-4">
+                        Topi, tas, tote bag, dan berbagai merchandise lainnya dengan custom design sesuai kebutuhan.
+                    </p>
+                    <button onclick="openServiceDetail('merchandise')" class="text-red-400 hover:text-red-300 transition">
+                        Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="glass-card rounded-3xl p-12">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Kenapa Memilih <span class="gradient-text">Helm's Convection?</span>
+                    </h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-center fade-in">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-users text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Tim Profesional</h3>
+                        <p class="text-gray-300">Dikerjakan oleh tim berpengalaman yang ahli di bidangnya</p>
+                    </div>
+                    
+                    <div class="text-center fade-in">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-palette text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Custom Desain Bebas</h3>
+                        <p class="text-gray-300">Wujudkan desain apapun sesuai kebutuhan dan keinginan Anda</p>
+                    </div>
+                    
+                    <div class="text-center fade-in">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-gem text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Bahan Berkualitas</h3>
+                        <p class="text-gray-300">Menggunakan bahan terbaik yang nyaman dan tahan lama</p>
+                    </div>
+                    
+                    <div class="text-center fade-in">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-clock text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Tepat Waktu</h3>
+                        <p class="text-gray-300">Proses produksi cepat dan pengiriman tepat waktu</p>
+                    </div>
+                    
+                    <div class="text-center fade-in">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-layer-group text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Partai Kecil & Besar</h3>
+                        <p class="text-gray-300">Melayani order dari satuan hingga ribuan pcs</p>
+                    </div>
+                    
+                    <div class="text-center fade-in">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-400 to-red-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-tag text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Harga Bersaing</h3>
+                        <p class="text-gray-300">Harga kompetitif dengan kualitas tetap terjaga</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12 fade-in">
+                    <p class="text-xl text-gray-300 italic">
+                        "Kami tidak hanya memproduksi — kami membantu mewujudkan identitasmu."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Katalog <span class="gradient-text">Produk</span>
+                </h2>
+                <p class="text-gray-300 text-lg">Lihat berbagai produk berkualitas dari kami</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Catalog Item 1 -->
+                <div class="catalog-item glass-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://picsum.photos/seed/kaos-sablon/400/300.jpg" alt="Kaos Sablon" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Kaos Sablon Distro</h3>
+                        <p class="text-gray-300 mb-4">Kualitas premium dengan sablon tahan lama</p>
+                        <button onclick="openCatalogModal()" class="text-cyan-400 hover:text-cyan-300 transition">
+                            Klik untuk lihat detail <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Catalog Item 2 -->
+                <div class="catalog-item glass-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://picsum.photos/seed/hoodie-jumper/400/300.jpg" alt="Hoodie" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Hoodie Jumper & Zipper</h3>
+                        <p class="text-gray-300 mb-4">Nyaman dan hangat untuk berbagai aktivitas</p>
+                        <button onclick="openCatalogModal()" class="text-purple-400 hover:text-purple-300 transition">
+                            Klik untuk lihat detail <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Catalog Item 3 -->
+                <div class="catalog-item glass-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://picsum.photos/seed/seragam-kantor/400/300.jpg" alt="Seragam" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Seragam Perusahaan</h3>
+                        <p class="text-gray-300 mb-4">Profesional dan representatif untuk brand Anda</p>
+                        <button onclick="openCatalogModal()" class="text-pink-400 hover:text-pink-300 transition">
+                            Klik untuk lihat detail <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Catalog Item 4 -->
+                <div class="catalog-item glass-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://picsum.photos/seed/jersey-team/400/300.jpg" alt="Jersey" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Jersey Komunitas</h3>
+                        <p class="text-gray-300 mb-4">Bahan dryfit untuk performa maksimal</p>
+                        <button onclick="openCatalogModal()" class="text-green-400 hover:text-green-300 transition">
+                            Klik untuk lihat detail <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Catalog Item 5 -->
+                <div class="catalog-item glass-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://picsum.photos/seed/topi-bordir/400/300.jpg" alt="Topi" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Topi Bordir</h3>
+                        <p class="text-gray-300 mb-4">Bordir rapi untuk logo dan desain custom</p>
+                        <button onclick="openCatalogModal()" class="text-orange-400 hover:text-orange-300 transition">
+                            Klik untuk lihat detail <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Catalog Item 6 -->
+                <div class="catalog-item glass-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://picsum.photos/seed/sweater-crewneck/400/300.jpg" alt="Sweater" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Sweater Crewneck</h3>
+                        <p class="text-gray-300 mb-4">Stylish dan nyaman untuk gaya casual</p>
+                        <button onclick="openCatalogModal()" class="text-red-400 hover:text-red-300 transition">
+                            Klik untuk lihat detail <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Testimoni <span class="gradient-text">Pelanggan</span>
+                </h2>
+                <p class="text-gray-300 text-lg">Apa kata mereka tentang kami</p>
+            </div>
+            
+            <div class="slider-container max-w-4xl mx-auto">
+                <div class="slider-track" id="testimonialSlider">
+                    <div class="slider-item p-8">
+                        <div class="glass-card rounded-2xl p-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-xl">Andi Pratama</h4>
+                                    <p class="text-gray-400">Owner Brand Clothing</p>
+                                </div>
+                            </div>
+                            <div class="flex mb-4">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                            <p class="text-gray-300 text-lg italic">
+                                "Produksinya rapi banget, sablon kuat, dan pengiriman tepat waktu. Recomended!"
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-item p-8">
+                        <div class="glass-card rounded-2xl p-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-xl">Siti Nurhaliza</h4>
+                                    <p class="text-gray-400">Event Organizer</p>
+                                </div>
+                            </div>
+                            <div class="flex mb-4">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                            <p class="text-gray-300 text-lg italic">
+                                "Cocok buat brand clothing, hasil benar-benar layak jual. Kualitas premium!"
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-item p-8">
+                        <div class="glass-card rounded-2xl p-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-xl">Budi Santoso</h4>
+                                    <p class="text-gray-400">Komunitas Sepeda</p>
+                                </div>
+                            </div>
+                            <div class="flex mb-4">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                            <p class="text-gray-300 text-lg italic">
+                                "CS ramah, konsultasi desain dibantu sampai fix, produksi cepat. Puas banget!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center mt-6 space-x-2">
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-cyan-400 transition" data-slide="0"></button>
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-600 transition" data-slide="1"></button>
+                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-600 transition" data-slide="2"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="glass-card rounded-3xl p-12">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        Hubungi <span class="gradient-text">Kami</span>
+                    </h2>
+                    <p class="text-gray-300 text-lg mb-4">
+                        Pesan sekarang dan wujudkan produk konveksimu bersama Helm's Convection
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="fade-in">
+                        <form id="contactForm" class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="Masukkan nama Anda">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">WhatsApp</label>
+                                <input type="tel" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="08xx-xxxx-xxxx">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Jenis Produk</label>
+                                <select class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition">
+                                    <option>Pilih jenis produk</option>
+                                    <option>Kaos Sablon</option>
+                                    <option>Hoodie & Sweater</option>
+                                    <option>Seragam</option>
+                                    <option>Jersey</option>
+                                    <option>Bordir</option>
+                                    <option>Lainnya</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Jumlah Order</label>
+                                <input type="number" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="Jumlah pesanan">
+                            </div>
+                            
+                            <button type="submit" class="w-full btn-glow py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold text-lg hover:scale-105 transition transform">
+                                <i class="fas fa-paper-plane mr-2"></i> Konsultasi Gratis Sekarang
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="fade-in">
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Alamat Workshop</h3>
+                                    <p class="text-gray-300">Jl. Industri No. 123, Jakarta Selatan, DKI Jakarta 12345</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Telepon</h3>
+                                    <p class="text-gray-300">+62 812-3456-7890</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Email</h3>
+                                    <p class="text-gray-300">info@helmsconvection.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1">Jam Operasional</h3>
+                                    <p class="text-gray-300">Senin - Sabtu: 08:00 - 17:00</p>
+                                    <p class="text-gray-300">Minggu & Hari Libur: Tutup</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 flex space-x-4">
+                            <a href="#" class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tshirt text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold">Helm's Convection</span>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    © 2024 Helm's Convection. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Consultation Modal -->
+    <div id="consultationModal" class="modal">
+        <div class="modal-content relative max-w-2xl w-full mx-4">
+            <div class="close-modal" onclick="closeConsultationModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="p-8">
+                <h2 class="text-3xl font-bold mb-6 gradient-text">Konsultasi Gratis</h2>
+                <p class="text-gray-300 mb-8">Tim kami siap membantu mewujudkan desain konveksi impian Anda</p>
+                
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                            <input type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="Masukkan nama Anda">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">WhatsApp</label>
+                            <input type="tel" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="08xx-xxxx-xxxx">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Jenis Produk</label>
+                        <select class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition">
+                            <option>Pilih jenis produk</option>
+                            <option>Kaos Sablon</option>
+                            <option>Hoodie & Sweater</option>
+                            <option>Seragam</option>
+                            <option>Jersey</option>
+                            <option>Bordir</option>
+                            <option>Merchandise</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Jumlah Order</label>
+                        <input type="number" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="Estimasi jumlah pesanan">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Deskripsi Kebutuhan</label>
+                        <textarea rows="4" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-400 focus:outline-none transition" placeholder="Jelaskan kebutuhan desain dan spesifikasi yang Anda inginkan..."></textarea>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button type="submit" class="flex-1 btn-glow py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold hover:scale-105 transition transform">
+                            <i class="fas fa-paper-plane mr-2"></i> Kirim Konsultasi
+                        </button>
+                        <button type="button" onclick="closeConsultationModal()" class="px-8 py-4 glass-card rounded-full font-semibold hover:bg-white/10 transition">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-8 p-4 bg-gradient-to-r from-cyan-500/10 to-purple-600/10 rounded-lg border border-cyan-400/20">
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle text-cyan-400 mr-3"></i>
+                        <p class="text-sm text-gray-300">
+                            Tim kami akan menghubungi Anda dalam 1x24 jam untuk diskusi lebih lanjut
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Catalog Modal -->
+    <div id="catalogModal" class="modal">
+        <div class="modal-content relative max-w-6xl w-full mx-4">
+            <div class="close-modal" onclick="closeCatalogModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="p-8">
+                <h2 class="text-3xl font-bold mb-2 gradient-text">Katalog Produk Lengkap</h2>
+                <p class="text-gray-300 mb-8">Pilih produk yang sesuai dengan kebutuhan Anda</p>
+                
+                <div class="catalog-grid">
+                    <div class="catalog-item-modal" onclick="selectProduct('Kaos Sablon Premium')">
+                        <img src="https://picsum.photos/seed/catalog-kaos/300/200.jpg" alt="Kaos" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Kaos Sablon Premium</h3>
+                            <p class="text-gray-400 text-sm mb-3">Cotton Combed 30s</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-cyan-400 font-semibold">Mulai dari Rp35.000</span>
+                                <i class="fas fa-arrow-right text-cyan-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-item-modal" onclick="selectProduct('Hoodie Jumper')">
+                        <img src="https://picsum.photos/seed/catalog-hoodie/300/200.jpg" alt="Hoodie" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Hoodie Jumper</h3>
+                            <p class="text-gray-400 text-sm mb-3">Fleece Cotton</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-purple-400 font-semibold">Mulai dari Rp95.000</span>
+                                <i class="fas fa-arrow-right text-purple-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-item-modal" onclick="selectProduct('Seragam Kantor')">
+                        <img src="https://picsum.photos/seed/catalog-seragam/300/200.jpg" alt="Seragam" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Seragam Kantor</h3>
+                            <p class="text-gray-400 text-sm mb-3">American Drill</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-pink-400 font-semibold">Mulai dari Rp75.000</span>
+                                <i class="fas fa-arrow-right text-pink-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-item-modal" onclick="selectProduct('Jersey Sport')">
+                        <img src="https://picsum.photos/seed/catalog-jersey/300/200.jpg" alt="Jersey" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Jersey Sport</h3>
+                            <p class="text-gray-400 text-sm mb-3">Dryfit Polyester</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-400 font-semibold">Mulai dari Rp85.000</span>
+                                <i class="fas fa-arrow-right text-green-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-item-modal" onclick="selectProduct('Topi Bordir')">
+                        <img src="https://picsum.photos/seed/catalog-topi/300/200.jpg" alt="Topi" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Topi Bordir</h3>
+                            <p class="text-gray-400 text-sm mb-3">Rafel Canvas</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-orange-400 font-semibold">Mulai dari Rp45.000</span>
+                                <i class="fas fa-arrow-right text-orange-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-item-modal" onclick="selectProduct('Sweater Crewneck')">
+                        <img src="https://picsum.photos/seed/catalog-sweater/300/200.jpg" alt="Sweater" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">Sweater Crewneck</h3>
+                            <p class="text-gray-400 text-sm mb-3">Baby Terry</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-red-400 font-semibold">Mulai dari Rp85.000</span>
+                                <i class="fas fa-arrow-right text-red-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button onclick="openConsultationModal()" class="btn-glow px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold hover:scale-105 transition transform">
+                        <i class="fas fa-comments mr-2"></i> Konsultasi Produk
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Detail Modal -->
+    <div id="serviceDetailModal" class="modal">
+        <div class="modal-content relative max-w-4xl w-full mx-4">
+            <div class="close-modal" onclick="closeServiceDetail()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="p-8">
+                <div id="serviceDetailContent">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Service Details Data
+        const serviceDetails = {
+            'kaos-sablon': {
+                title: 'Kaos Sablon Premium',
+                image: 'https://picsum.photos/seed/detail-kaos/800/400.jpg',
+                description: 'Produksi kaos sablon dengan kualitas terbaik untuk berbagai kebutuhan Anda. Kami menggunakan teknik sablon modern yang menghasilkan cetakan tajam, awet, dan tidak mudah retak.',
+                features: [
+                    'Bahan Cotton Combed 20s, 24s, 30s',
+                    'Sablon Plastisol, Rubber, Discharge',
+                    'Minimal order 24 pcs',
+                    'Pengerjaan 7-14 hari',
+                    'Gratis desain untuk order 100+ pcs',
+                    'Garansi sablon 3 bulan'
+                ],
+                price: 'Mulai dari Rp35.000/pcs',
+                color: 'cyan'
+            },
+            'bordir-komputer': {
+                title: 'Bordir Komputer Profesional',
+                image: 'https://picsum.photos/seed/detail-bordir/800/400.jpg',
+                description: 'Layanan bordir komputer dengan hasil presisi dan detail. Cocok untuk logo perusahaan, instansi, komunitas, atau desain custom lainnya.',
+                features: [
+                    'Mesin bordir komputer 12 kepala',
+                    'Benang berkualitas tinggi',
+                    'Hasil rapi dan detail',
+                    'Tahan lama dan tidak mudah luntur',
+                    'Bisa untuk berbagai media (kaos, topi, jaket)',
+                    'Minimal order 12 pcs'
+                ],
+                price: 'Mulai dari Rp10.000/pcs',
+                color: 'purple'
+            },
+            'hoodie-sweater': {
+                title: 'Hoodie & Sweater Custom',
+                image: 'https://picsum.photos/seed/detail-hoodie/800/400.jpg',
+                description: 'Produksi hoodie dan sweater dengan bahan berkualitas. Nyaman dipakai, hangat, dan stylish untuk berbagai aktivitas.',
+                features: [
+                    'Bahan Fleece, Baby Terry, Cotton Fleece',
+                    'Model Jumper, Zipper, Crewneck',
+                    'Sablon atau bordir custom',
+                    'Berbagai pilihan warna',
+                    'Ukuran S-XXL',
+                    'Minimal order 12 pcs'
+                ],
+                price: 'Mulai dari Rp85.000/pcs',
+                color: 'pink'
+            },
+            'seragam': {
+                title: 'Seragam Kerja & Sekolah',
+                image: 'https://picsum.photos/seed/detail-seragam/800/400.jpg',
+                description: 'Pembuatan seragam dengan standar kualitas tinggi. Desain profesional, nyaman dipakai, dan tahan lama untuk penggunaan jangka panjang.',
+                features: [
+                    'Bahan American Drill, Taipan Tropical',
+                    'Jahitan rapi dan kuat',
+                    'Desain sesuai kebutuhan',
+                    'Aksesoris lengkap (kancing, emblem)',
+                    'Ukuran custom tersedia',
+                    'Minimal order 20 pcs'
+                ],
+                price: 'Mulai dari Rp75.000/pcs',
+                color: 'green'
+            },
+            'jersey': {
+                title: 'Jersey Olahraga & Komunitas',
+                image: 'https://picsum.photos/seed/detail-jersey/800/400.jpg',
+                description: 'Jersey olahraga dengan bahan teknologi modern. Adem, cepat kering, dan nyaman untuk performa maksimal saat beraktivitas.',
+                features: [
+                    'Bahan Dryfit, Waffle, Polyester',
+                    'Teknik sablon sublimasi',
+                    'Desain full color',
+                    'Nama dan nomor custom',
+                    'Bisa untuk semua olahraga',
+                    'Minimal order 12 pcs'
+                ],
+                price: 'Mulai dari Rp85.000/pcs',
+                color: 'orange'
+            },
+            'merchandise': {
+                title: 'Merchandise Custom',
+                image: 'https://picsum.photos/seed/detail-merch/800/400.jpg',
+                description: 'Berbagai merchandise custom untuk kebutuhan brand, event, atau komunitas. Dari topi hingga tas, semua bisa dicustom sesuai desain Anda.',
+                features: [
+                    'Topi, Tas, Tote Bag, Payung',
+                    'Powerbank, Tumbler, Pin',
+                    'Desain fully custom',
+                    'Berbagai teknik cetak',
+                    'Kualitas terjamin',
+                    'Minimal order fleksibel'
+                ],
+                price: 'Mulai dari Rp15.000/pcs',
+                color: 'red'
+            }
+        };
+
+        // Modal Functions
+        function openConsultationModal() {
+            document.getElementById('consultationModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeConsultationModal() {
+            document.getElementById('consultationModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openCatalogModal() {
+            document.getElementById('catalogModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCatalogModal() {
+            document.getElementById('catalogModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openServiceDetail(serviceId) {
+            const service = serviceDetails[serviceId];
+            const content = document.getElementById('serviceDetailContent');
+            
+            content.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="${service.image}" alt="${service.title}" class="service-detail-image">
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-4 gradient-text">${service.title}</h2>
+                        <p class="text-gray-300 mb-6">${service.description}</p>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold mb-4">Fitur & Keunggulan:</h3>
+                            <ul class="feature-list">
+                                ${service.features.map(feature => `
+                                    <li>
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>${feature}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="p-4 bg-gradient-to-r from-${service.color}-500/10 to-${service.color}-600/10 rounded-lg border border-${service.color}-400/20 mb-6">
+                            <p class="text-${service.color}-400 font-bold text-lg">${service.price}</p>
+                            <p class="text-gray-400 text-sm">Harga dapat berubah sesuai spesifikasi</p>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <button onclick="openConsultationModal(); closeServiceDetail();" class="flex-1 btn-glow py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold hover:scale-105 transition transform">
+                                <i class="fas fa-comments mr-2"></i> Konsultasi Sekarang
+                            </button>
+                            <button onclick="closeServiceDetail()" class="px-6 py-3 glass-card rounded-full font-semibold hover:bg-white/10 transition">
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('serviceDetailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeServiceDetail() {
+            document.getElementById('serviceDetailModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function selectProduct(productName) {
+            alert(`Anda memilih: ${productName}\nTim kami akan menghubungi Anda untuk detail lebih lanjut.`);
+            closeCatalogModal();
+            openConsultationModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('light');
+            if (html.classList.contains('light')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        let mobileMenuOpen = false;
+        
+        mobileMenu.addEventListener('click', () => {
+            mobileMenuOpen = !mobileMenuOpen;
+        });
+        
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxBg = document.querySelector('.parallax-bg');
+            if (parallaxBg) {
+                const speed = parallaxBg.dataset.speed || 0.5;
+                parallaxBg.style.transform = `translateY(${scrolled * speed}px)`;
+            }
+        });
+        
+        // Fade In on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Mouse Tracking Effect
+        document.querySelectorAll('.mouse-track').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+        
+        // Testimonial Slider
+        const slider = document.getElementById('testimonialSlider');
+        const dots = document.querySelectorAll('.testimonial-dot');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            currentSlide = index;
+            slider.style.transform = `translateX(-${index * 100}%)`;
+            
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.remove('bg-gray-600');
+                    dot.classList.add('bg-cyan-400');
+                } else {
+                    dot.classList.remove('bg-cyan-400');
+                    dot.classList.add('bg-gray-600');
+                }
+            });
+        }
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+        
+        // Auto-slide testimonials
+        setInterval(() => {
+            const nextSlide = (currentSlide + 1) % dots.length;
+            showSlide(nextSlide);
+        }, 5000);
+        
+        // Form Submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Terima kasih! Kami akan segera menghubungi Anda.');
+            e.target.reset();
+        });
+        
+        // Smooth Scroll for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add glow effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            serviceCards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = 1 - (rect.top / window.innerHeight);
+                    card.style.boxShadow = `0 0 ${20 * progress}px rgba(0, 212, 255, ${0.3 * progress})`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
